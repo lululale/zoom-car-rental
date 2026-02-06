@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AZoom Car Rental - Premium Car Rental Service</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                    <path d="M20 5L35 15V25L20 35L5 25V15L20 5Z" fill="url(#logoGradient)"/>
+                    <defs>
+                        <linearGradient id="logoGradient" x1="5" y1="5" x2="35" y2="35">
+                            <stop offset="0%" style="stop-color:#FF6B35;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#F7931E;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                </svg>
+                <span>AZoom</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#home" class="nav-link active">Home</a></li>
+                <li><a href="#reserve" class="nav-link">Reserve</a></li>
+                <li><a href="#rent" class="nav-link">Rent Car</a></li>
+                <li><a href="#return" class="nav-link">Return</a></li>
+                <li><a href="#employee" class="nav-link">Employee</a></li>
+            </ul>
+            <button class="theme-toggle" id="themeToggle">
+                <span class="theme-icon">🌙</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="section hero-section active">
+        <div class="hero-content">
+            <div class="hero-badge">Premium Fleet Available</div>
+            <h1 class="hero-title">Drive Your Dreams</h1>
+            <p class="hero-subtitle">Experience luxury and freedom with AZoom's premium car rental service</p>
+            <div class="hero-cta">
+                <button class="btn btn-primary" onclick="navigateTo('reserve')">Reserve Now</button>
+                <button class="btn btn-secondary" onclick="navigateTo('rent')">Pick Up Car</button>
+            </div>
+        </div>
+        <div class="hero-bg">
+            <div class="gradient-orb orb-1"></div>
+            <div class="gradient-orb orb-2"></div>
+            <div class="gradient-orb orb-3"></div>
+        </div>
+    </section>
+
+    <!-- Reserve Car Section -->
+    <section id="reserve" class="section">
+        <div class="section-header">
+            <h2 class="section-title">Reserve Your Car</h2>
+            <p class="section-subtitle">Book online and save 15% on your rental</p>
+        </div>
+
+        <div class="content-grid">
+            <!-- Car Selection -->
+            <div class="card car-selection">
+                <h3 class="card-title">Select Your Vehicle</h3>
+                
+                <div class="filter-tabs">
+                    <button class="filter-tab active" data-category="all">All Cars</button>
+                    <button class="filter-tab" data-category="economy">Economy</button>
+                    <button class="filter-tab" data-category="luxury">Luxury</button>
+                    <button class="filter-tab" data-category="suv">SUV</button>
+                </div>
+
+                <div id="carList" class="car-grid"></div>
+            </div>
+
+            <!-- Reservation Form -->
+            <div class="card reservation-form">
+                <h3 class="card-title">Reservation Details</h3>
+                
+                <form id="reserveForm">
+                    <div class="form-group">
+                        <label>Selected Car</label>
+                        <input type="text" id="selectedCarDisplay" readonly placeholder="Select a car from the left">
+                        <input type="hidden" id="selectedCarId">
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Pick-up Date</label>
+                            <input type="date" id="pickupDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Return Date</label>
+                            <input type="date" id="returnDate" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" id="customerName" required placeholder="John Doe">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="customerEmail" required placeholder="john@example.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Phone</label>
+                        <input type="tel" id="customerPhone" required placeholder="+1 234 567 8900">
+                    </div>
+
+                    <div class="divider"></div>
+
+                    <h4 class="form-section-title">Payment Information</h4>
+
+                    <div class="form-group">
+                        <label>Card Number</label>
+                        <input type="text" id="cardNumber" maxlength="19" placeholder="1234 5678 9012 3456" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Expiry Date</label>
+                            <input type="text" id="cardExpiry" placeholder="MM/YY" maxlength="5" required>
+                        </div>
+                        <div class="form-group">
+                            <label>CVV</label>
+                            <input type="text" id="cardCVV" maxlength="3" placeholder="123" required>
+                        </div>
+                    </div>
+
+                    <div class="price-summary">
+                        <div class="price-row">
+                            <span>Daily Rate:</span>
+                            <span id="dailyRate">$0</span>
+                        </div>
+                        <div class="price-row">
+                            <span>Number of Days:</span>
+                            <span id="numDays">0</span>
+                        </div>
+                        <div class="price-row total">
+                            <span>Total Amount:</span>
+                            <span id="totalAmount">$0</span>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-block">Complete Reservation</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Rent Car Section -->
+    <section id="rent" class="section">
+        <div class="section-header">
+            <h2 class="section-title">Pick Up Your Car</h2>
+            <p class="section-subtitle">Office rental process - Complete your rental agreement</p>
+        </div>
+
+        <div class="content-centered">
+            <div class="card rental-card">
+                <h3 class="card-title">Enter Reservation Details</h3>
+                
+                <form id="rentForm">
+                    <div class="form-group">
+                        <label>Reservation ID or Email</label>
+                        <input type="text" id="lookupReservation" placeholder="Enter reservation ID or email">
+                    </div>
+                    <button type="button" class="btn btn-secondary" onclick="lookupReservation()">Look Up Reservation</button>
+                </form>
+
+                <div id="reservationDetails" class="reservation-details hidden">
+                    <div class="divider"></div>
+                    <h4 class="form-section-title">Reservation Found</h4>
+                    
+                    <div class="detail-grid">
+                        <div class="detail-item">
+                            <label>Customer Name</label>
+                            <span id="rentCustomerName"></span>
+                        </div>
+                        <div class="detail-item">
+                            <label>Vehicle</label>
+                            <span id="rentCarName"></span>
+                        </div>
+                        <div class="detail-item">
+                            <label>Pick-up Date</label>
+                            <span id="rentPickupDate"></span>
+                        </div>
+                        <div class="detail-item">
+                            <label>Return Date</label>
+                            <span id="rentReturnDate"></span>
+                        </div>
+                        <div class="detail-item">
+                            <label>Total Amount</label>
+                            <span id="rentTotalAmount"></span>
+                        </div>
+                    </div>
+
+                    <div class="divider"></div>
+
+                    <h4 class="form-section-title">Complete Rental Agreement</h4>
+                    
+                    <form id="completeRental">
+                        <div class="form-group">
+                            <label>Driver's License Number</label>
+                            <input type="text" id="licenseNumber" required placeholder="DL123456789">
+                        </div>
+
+                        <div class="form-group">
+                            <label>License Expiry Date</label>
+                            <input type="date" id="licenseExpiry" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="insuranceAccept" required>
+                                <span>I accept the insurance coverage ($20/day)</span>
+                            </label>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="termsAccept" required>
+                                <span>I agree to the terms and conditions</span>
+                            </label>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Initial Mileage</label>
+                            <input type="number" id="initialMileage" required placeholder="25000">
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-block">Complete Pick-Up</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Return Car Section -->
+    <section id="return" class="section">
+        <div class="section-header">
+            <h2 class="section-title">Return Your Car</h2>
+            <p class="section-subtitle">Complete your rental at our designated car park</p>
+        </div>
+
+        <div class="content-centered">
+            <div class="card return-card">
+                <h3 class="card-title">Vehicle Return Process</h3>
+                
+                <form id="returnForm">
+                    <div class="form-group">
+                        <label>Rental ID or License Plate</label>
+                        <input type="text" id="lookupRental" placeholder="Enter rental ID or license plate">
+                    </div>
+                    <button type="button" class="btn btn-secondary" onclick="lookupRental()">Look Up Rental</button>
+                </form>
+
+                <div id="rentalDetails" class="rental-details hidden">
+                    <div class="divider"></div>
+                    <h4 class="form-section-title">Active Rental Found</h4>
+                    
+                    <div class="detail-grid">
+                        <div class="detail-item">
+                            <label>Customer Name</label>
+                            <span id="returnCustomerName"></span>
+                        </div>
+                        <div class="detail-item">
+                            <label>Vehicle</label>
+                            <span id="returnCarName"></span>
+                        </div>
+                        <div class="detail-item">
+                            <label>Pick-up Date</label>
+                            <span id="returnPickupDate"></span>
+                        </div>
+                        <div class="detail-item">
+                            <label>Expected Return</label>
+                            <span id="returnExpectedDate"></span>
+                        </div>
+                        <div class="detail-item">
+                            <label>Initial Mileage</label>
+                            <span id="returnInitialMileage"></span>
+                        </div>
+                    </div>
+
+                    <div class="divider"></div>
+
+                    <h4 class="form-section-title">Return Information</h4>
+                    
+                    <form id="completeReturn">
+                        <div class="form-group">
+                            <label>Return Location</label>
+                            <select id="returnLocation" required>
+                                <option value="">Select car park</option>
+                                <option value="downtown">Downtown Car Park - Level 2</option>
+                                <option value="airport">Airport Car Park - Section A</option>
+                                <option value="northside">Northside Car Park - Level 1</option>
+                                <option value="beachfront">Beachfront Car Park - Ground Floor</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Final Mileage</label>
+                            <input type="number" id="finalMileage" required placeholder="25450">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Fuel Level</label>
+                            <select id="fuelLevel" required>
+                                <option value="">Select fuel level</option>
+                                <option value="full">Full</option>
+                                <option value="3/4">3/4</option>
+                                <option value="1/2">1/2</option>
+                                <option value="1/4">1/4</option>
+                                <option value="empty">Empty</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Additional Notes</label>
+                            <textarea id="returnNotes" rows="3" placeholder="Any issues or notes about the vehicle?"></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-block">Submit Return</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Employee Inspection Section -->
+    <section id="employee" class="section">
+        <div class="section-header">
+            <h2 class="section-title">Employee Dashboard</h2>
+            <p class="section-subtitle">Inspect returned vehicles and update status</p>
+        </div>
+
+        <div class="content-grid">
+            <!-- Pending Inspections List -->
+            <div class="card inspection-list-card">
+                <h3 class="card-title">Pending Inspections</h3>
+                <div id="pendingInspections" class="inspection-list"></div>
+            </div>
+
+            <!-- Inspection Form -->
+            <div class="card inspection-form-card">
+                <div id="noInspectionSelected" class="empty-state">
+                    <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
+                        <circle cx="40" cy="40" r="35" stroke="currentColor" stroke-width="2" opacity="0.2"/>
+                        <path d="M40 25V40L50 50" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    <p>Select a return to inspect</p>
+                </div>
+
+                <div id="inspectionFormContainer" class="hidden">
+                    <h3 class="card-title">Vehicle Inspection</h3>
+                    
+                    <div class="vehicle-info">
+                        <h4 id="inspectionCarName"></h4>
+                        <p id="inspectionCustomerInfo"></p>
+                    </div>
+
+                    <form id="inspectionForm">
+                        <div class="inspection-checklist">
+                            <h4 class="form-section-title">Exterior Condition</h4>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="exterior" value="clean" checked>
+                                <span>Vehicle is clean</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="exterior" value="nodents" checked>
+                                <span>No dents or scratches</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="exterior" value="lights" checked>
+                                <span>All lights working</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="exterior" value="tires" checked>
+                                <span>Tires in good condition</span>
+                            </label>
+                        </div>
+
+                        <div class="inspection-checklist">
+                            <h4 class="form-section-title">Interior Condition</h4>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="interior" value="clean" checked>
+                                <span>Interior is clean</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="interior" value="nodamage" checked>
+                                <span>No damage to seats/dashboard</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="interior" value="nosmoke" checked>
+                                <span>No smoke smell</span>
+                            </label>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Damage Assessment</label>
+                            <select id="damageLevel" required>
+                                <option value="none">No Damage</option>
+                                <option value="minor">Minor Damage ($50-200)</option>
+                                <option value="moderate">Moderate Damage ($200-500)</option>
+                                <option value="major">Major Damage ($500+)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group" id="damageDetailsGroup" style="display: none;">
+                            <label>Damage Details</label>
+                            <textarea id="damageDetails" rows="3" placeholder="Describe the damage..."></textarea>
+                        </div>
+
+                        <div class="form-group" id="damageChargeGroup" style="display: none;">
+                            <label>Damage Charge</label>
+                            <input type="number" id="damageCharge" placeholder="0.00" step="0.01">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Inspector Notes</label>
+                            <textarea id="inspectorNotes" rows="3" placeholder="Additional observations..."></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-block">Complete Inspection</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Success Modal -->
+    <div id="successModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-icon success">
+                <svg width="60" height="60" viewBox="0 0 60 60" fill="none">
+                    <circle cx="30" cy="30" r="28" stroke="currentColor" stroke-width="2"/>
+                    <path d="M18 30L26 38L42 22" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <h3 id="modalTitle"></h3>
+            <p id="modalMessage"></p>
+            <div id="modalDetails"></div>
+            <button class="btn btn-primary" onclick="closeModal()">Got it!</button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <div class="logo">
+                    <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                        <path d="M20 5L35 15V25L20 35L5 25V15L20 5Z" fill="url(#logoGradientFooter)"/>
+                        <defs>
+                            <linearGradient id="logoGradientFooter" x1="5" y1="5" x2="35" y2="35">
+                                <stop offset="0%" style="stop-color:#FF6B35;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#F7931E;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                    <span>AZoom</span>
+                </div>
+                <p>Premium car rental service for unforgettable journeys</p>
+            </div>
+            <div class="footer-links">
+                <div class="footer-column">
+                    <h4>Company</h4>
+                    <a href="#">About Us</a>
+                    <a href="#">Careers</a>
+                    <a href="#">Contact</a>
+                </div>
+                <div class="footer-column">
+                    <h4>Support</h4>
+                    <a href="#">Help Center</a>
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Privacy Policy</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 AZoom Car Rental. ISIT207 Assignment 2 Project.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
